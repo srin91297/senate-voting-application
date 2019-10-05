@@ -10,6 +10,7 @@ setup(
         'flask',
         'flask_pymongo',
         'pymongo',
-        'bcrypt'
+        'bcrypt',
+        'dnspython'
     ],
 )
