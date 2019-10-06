@@ -1,3 +1,4 @@
+#user class model
 class User():
 	def _init__(self, id):
 		self.id = id	#db user id

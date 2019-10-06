@@ -27,7 +27,8 @@ def login():
         return render_template('login.html')
     
     return render_template('index.html')
-    
+
+#load user for the login manager auth
 @login_manager.user_loader
 def load_user(self, user_id):
 	if user_id is None:
