@@ -1,11 +1,16 @@
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
+from flask_login import LoginManager
 import bcrypt
 
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'Login'
 app.config['MONGO_URI'] = 'mongodb+srv://ssegroup2:MghlwoCbDqaav9Yc@ssegroup2-vksod.mongodb.net/users?retryWrites=true&w=majority'
+
+#flask-login stuff
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 mongo = PyMongo(app)
 

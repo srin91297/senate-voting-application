@@ -2,7 +2,10 @@
 from app import app, mongo
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
+from app import *
+from models.user import User
 import bcrypt
+
 
 @app.route('/login', methods=['POST', 'GET'])
 
@@ -23,5 +26,11 @@ def login():
         print("GETTING")
         return render_template('login.html')
     
-    return render_template('index.html') 
+    return render_template('index.html')
+    
+@login_manager.user_loader
+def load_user(self, user_id):
+	if user_id is None:
+		return None
+	return self.get_id()
     
