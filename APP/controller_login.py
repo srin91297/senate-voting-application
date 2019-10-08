@@ -30,8 +30,8 @@ def login():
 
 #load user for the login manager auth
 @login_manager.user_loader
-def load_user(self, user_id):
+def load_user(user_id):
 	if user_id is None:
 		return None
-	return self.get_id()
+	return User.query.get(int(user_id))
     
