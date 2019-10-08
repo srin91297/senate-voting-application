@@ -27,6 +27,7 @@ def login():
 
         login_user = users.find_one({'name' : request.form['username']})
 
+
         if login_user:
             if (request.form['pass'], login_user['password'] == login_user['password']):
                 session['username'] = request.form['username']
