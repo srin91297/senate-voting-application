@@ -8,7 +8,6 @@ import bcrypt
 
 def login():
     if request.method == "POST":
-            
         users = mongo.db.users
         login_user = users.find_one({'name' : request.form['username']})
 
@@ -16,12 +15,10 @@ def login():
             if (request.form['pass'], login_user['password'] == login_user['password']):
                 session['username'] = request.form['username']
                 return redirect(url_for('index'))
-
-        return 'Invalid username/password combination'
+                
+        #show message of incorrect details
+        return render_template('login.html', mess='Incorrect login details entered')
     
     if request.method == "GET":
-        print("GETTING")
         return render_template('login.html')
-    
-    return render_template('index.html') 
     
