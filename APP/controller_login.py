@@ -5,14 +5,26 @@ from flask_pymongo import PyMongo
 from app import *
 from models.user import User
 import bcrypt
+import cgi
 
 
 @app.route('/login', methods=['POST', 'GET'])
 
 def login():
     if request.method == "POST":
-            
         users = mongo.db.users
+
+        #server side validaton
+        transform_username = cgi.escape(request.form['username'])
+        transform_password = cgi.escape(request.form['pass'])
+        if transform_username  != request.form['username'] or transform_password  != request.form['pass']:
+            #wrong characters entered
+            return render_template('login.html', mess='Malicious characters entered')
+        
+        #check fields entered are not empty
+        if transform_password == "" or transform_username == "":
+            return render_template('login.html', mess='Must fill in all fields!')  
+
         login_user = users.find_one({'name' : request.form['username']})
 
         if login_user:
@@ -20,10 +32,10 @@ def login():
                 session['username'] = request.form['username']
                 return redirect(url_for('index'))
 
-        return 'Invalid username/password combination'
+        #show message of incorrect details
+        return render_template('login.html', mess='Incorrect login details entered')
     
     if request.method == "GET":
-        print("GETTING")
         return render_template('login.html')
     
     return render_template('index.html')

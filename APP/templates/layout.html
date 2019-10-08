@@ -15,13 +15,16 @@
 
 </head>
 
-<body>
+<div background-image ="https://theforge.defence.gov.au/sites/default/files/images/publication/australia-550183_1920.jpg">
 
-    {% block body %}{% endblock %}
+    <body>
 
-    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        {% block body %}{% endblock %}
 
-</body>
+        <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    </body>
+</div>
 
 </html>
