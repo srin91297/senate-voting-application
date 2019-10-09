@@ -2,8 +2,11 @@
 from app import app, mongo
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
+from app import *
+from models.user import User
 import bcrypt
 import cgi
+
 
 @app.route('/login', methods=['POST', 'GET'])
 
@@ -24,6 +27,7 @@ def login():
 
         login_user = users.find_one({'name' : request.form['username']})
 
+
         if login_user:
             if (request.form['pass'], login_user['password'] == login_user['password']):
                 session['username'] = request.form['username']
@@ -34,4 +38,13 @@ def login():
     
     if request.method == "GET":
         return render_template('login.html')
+    
+    return render_template('index.html')
+
+#load user for the login manager auth
+@login_manager.user_loader
+def load_user(user_id):
+	if user_id is None:
+		return None
+	return User.query.get(int(user_id))
     
