@@ -11,7 +11,7 @@ import cgi
 
 def login():
     if request.method == "POST":
-        users = mongo.db.users
+        users = mongo.db.admins
 
         #server side validaton
         transform_username = cgi.escape(request.form['username'])
@@ -30,9 +30,7 @@ def login():
         if login_user:
             if (request.form['pass'], login_user['password'] == login_user['password']):
                 session['username'] = request.form['username']
-                if(login_user['role'] == "voter"):
-                    return redirect(url_for('index'))
-                elif(login_user['role'] == "admin"):
+                if(login_user['role'] == "admin"):
                     return redirect(url_for('admindashboard'))
             else:
                 #show message of incorrect details

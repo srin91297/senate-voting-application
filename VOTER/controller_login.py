@@ -32,8 +32,6 @@ def login():
                 session['username'] = request.form['username']
                 if(login_user['role'] == "voter"):
                     return redirect(url_for('index'))
-                elif(login_user['role'] == "admin"):
-                    return redirect(url_for('admindashboard'))
             else:
                 #show message of incorrect details
                 return render_template('login.html', mess='Incorrect login details entered')
