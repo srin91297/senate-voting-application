@@ -7,7 +7,6 @@ from models.user import User
 import bcrypt
 import cgi
 
-
 @app.route('/login', methods=['POST', 'GET'])
 
 def login():
@@ -31,9 +30,14 @@ def login():
         if login_user:
             if (request.form['pass'], login_user['password'] == login_user['password']):
                 session['username'] = request.form['username']
-                return redirect(url_for('index'))
+                if(login_user['role'] == "voter"):
+                    return redirect(url_for('index'))
+                elif(login_user['role'] == "admin"):
+                    return redirect(url_for('admindashboard'))
+            else:
+                #show message of incorrect details
+                return render_template('login.html', mess='Incorrect login details entered')
 
-        #show message of incorrect details
         return render_template('login.html', mess='Incorrect login details entered')
     
     if request.method == "GET":

@@ -23,4 +23,5 @@ if __name__=='__main__':
     from controller_index import *
     from controller_register import *
     from controller_logout import *
+    from controller_admindashboard import *
     app.run(debug=True)
