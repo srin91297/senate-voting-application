@@ -1,0 +1,28 @@
+﻿.popupCircle {
+border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin-right: 15px;
+background-color:#ccc;
+}
+
+/* NEW POPUP TRADENETWORK */
+
+.red-dot {
+background-color:#a60b19;
+}
+.orange-dot {
+background-color:#df9442;
+}
+.yellow-dot {
+background-color:#f3f040;
+}
+.green-dot {
+background-color:#50c356;
+}
+.aqua-dot {
+background-color:#39ddd9;
+}
+.purple-dot {
+background-color:#aa2ed0;
+}
