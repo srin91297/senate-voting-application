@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\VOTER",
+    "\\VOTER\\models",
+    "\\VOTER\\templates"
   ],
-  "SelectedNode": "\\WIKI",
+  "SelectedNode": "\\VOTER\\templates\\admindashboard.html",
   "PreviewInSolutionExplorer": false
 }

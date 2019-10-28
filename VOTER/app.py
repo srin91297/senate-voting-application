@@ -6,14 +6,14 @@ import bcrypt
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'Login'
-app.config['MONGO_URI'] = 'mongodb+srv://ssegroup2:MghlwoCbDqaav9Yc@ssegroup2-vksod.mongodb.net/users?retryWrites=true&w=majority'
 
 #flask-login stuff
 login_manager = LoginManager()
 login_manager.init_app(app)
 #login_manager.login_view = 'login'
 
-mongo = PyMongo(app)
+mongo = PyMongo(app, uri = 'mongodb+srv://ssegroup2:MghlwoCbDqaav9Yc@ssegroup2-vksod.mongodb.net/voters?retryWrites=true&w=majority')
+common = PyMongo(app, uri = 'mongodb+srv://ssegroup2:MghlwoCbDqaav9Yc@ssegroup2-vksod.mongodb.net/common?retryWrites=true&w=majority')
 
 app.secret_key = 'mysecret'
 
@@ -23,5 +23,6 @@ if __name__=='__main__':
     from controller_index import *
     from controller_register import *
     from controller_logout import *
-    from controller_admindashboard import *
+    from controller_vote import *
+    from controller_voterdashboard import *
     app.run(debug=True)
