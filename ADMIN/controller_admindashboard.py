@@ -1,5 +1,5 @@
 # imports
-from app import app, db
+from app import app, common, admin
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
 from models.candidate import Candidate
@@ -10,13 +10,13 @@ import bcrypt
 MAX_ENTRIES = 10 # Set the maximum entries on discussion board page to this value
 
 def get_max_page():
-    total = len(Candidate().getAll(db))
+    total = len(Candidate().getAll(common))
     if total == 0:
         total = 1
     return ceil(total/MAX_ENTRIES)
 
 def prep_data(page_num, ):
-    data = Candidate().getAll(db)
+    data = Candidate().getAll(common)
     total = len(data)
     res = []
     i = 0
@@ -57,7 +57,7 @@ def candidates(page):
                 'party':request.values.get('party')
             }
             print(obj)
-            candidate = Candidate().create(db, obj)
+            candidate = Candidate().create(common, obj)
             print(candidate)
             return redirect(url_for('candidates',page=str(page)))
         res = prep_data(page)
@@ -66,3 +66,18 @@ def candidates(page):
         return render_template('candidates.html', data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
         return render_template('login.html')
+
+@app.route('/admindashboard/candidates/<int:page>/edit/<string:candid>', methods=["GET", "POST"])
+def candidates_edit(page, candid):
+    if request.method == "POST":
+        #update candidate
+        data = [request.values.get('name'), request.values.get('location'), request.values.get('party'), candid]
+        Candidate().update(common, data)
+        return redirect(url_for('candidates', page=page))
+
+@app.route('/admindashboard/candidates/<int:page>/delete/<string:candid>', methods=["GET", "POST"])
+def candidates_delete(page, candid):
+    if request.method == "POST":
+        #Delete candidate
+        Candidate().delete(common, candid)
+        return redirect(url_for('candidates', page=page))

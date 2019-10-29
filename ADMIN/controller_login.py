@@ -1,5 +1,5 @@
 # imports
-from app import app, db
+from app import app, common, admin
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
 from app import *
@@ -11,7 +11,7 @@ import cgi
 
 def login():
     if request.method == "POST":
-        users = db.admins
+        users = admin.users
 
         #server side validaton
         transform_username = cgi.escape(request.form['username'])
