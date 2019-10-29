@@ -20,6 +20,23 @@ class Candidate:
         res =  candidate.insert(obj)
         return candidate.find({"_id":res})
 
+    # Input: 
+    # data = [name, location, party, id]
+    # Output:
+    # updates a candidate at given id with data array
+    def update(self, db, obj):
+        candidate = db.candidate
+        # res = post.find_one({"_id":data[8]})
+        candidate.update_one(
+            {
+                "_id":ObjectId(obj[3])
+            }, 
+            {
+                "$set": {"name":obj[0], "location":obj[1], "party":obj[2]}
+            },
+            upsert=False
+            )
+
     # Input:
     # 
     # Output:

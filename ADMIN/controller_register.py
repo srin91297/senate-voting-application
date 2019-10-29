@@ -1,5 +1,5 @@
 # imports
-from app import app, db
+from app import app, common, admin
 from flask import Flask, flash, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
 import bcrypt
@@ -9,7 +9,7 @@ import cgi
 
 def register():
     if request.method == 'POST':
-        users = db.admins
+        users = admin.users 
 
         #server side validaton
         transform_username = cgi.escape(request.form['username'])
