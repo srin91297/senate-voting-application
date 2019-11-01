@@ -314,6 +314,23 @@
         .modal form label {
             font-weight: normal;
         }
+
+        table{
+            border: 1px solid black;
+            border-collapse: collapse;
+            table-layout:fixed;
+        }
+        td,tr,th{
+            border: 1px solid black;
+            padding: 15px;
+            text-align:center;
+        }
+        hr{
+            margin-top:50px;
+            margin-bottom:50px;
+            color:black;
+            border-top:5px solid black;
+        }
     </style>
     <!-- END -->
     <div class="row">
@@ -323,8 +340,50 @@
                     Voting Page
                 </header>
                 <div class="panel-body">
-                    
-                </div>
+                    <form action="http://localhost:5000/vote" method="POST">
+                        <table style="width:100%">
+                            <tr>
+                                {% for parties in parties %}
+                                <th>
+                                    {{parties.name}}
+                                    <select name="{{parties.name}}">
+                                        <option value=""></option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>
+                                </th>
+                                {% endfor %}
+                                <th>Independent</th>
+                            </tr>
+                        </table>
+                        <hr />
+                        <table style="width:100%">
+                            <tr>
+                                {% for parties in parties %}
+                                <th>
+                                    {{parties.name}}
+                                    <select name="{{parties.name}}">
+                                        <option value=""></option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>
+                                </th>
+                                {% endfor %}
+                                <th>Independent</th>
+                            </tr>
+                        </table>
+                        <button type="submit" class="btn btn-secondary btn-lg btn-block">Submit Vote</button>
+                    </form>
+                        
+</div>
             </section>
         </div>
     </div>
