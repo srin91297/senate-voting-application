@@ -7,32 +7,31 @@ class Candidate:
     # Output:
     # returns object
     def getbyid(self, db, id):
-        candidate = db.candidate
+        candidate = db.candidates
         returnedcandidate = candidate.find({"_id":ObjectId(id)})
         return returnedcandidate
 
     # Input: 
-    # data = [name, location, party]
+    # data = [name]
     # Output:
     # returns the newly created object
     def create(self, db, obj):
-        candidate = db.candidate
+        candidate = db.candidates
         res =  candidate.insert(obj)
         return candidate.find({"_id":res})
 
     # Input: 
-    # data = [name, location, party, id]
+    # data = [name, id]
     # Output:
     # updates a candidate at given id with data array
     def update(self, db, obj):
-        candidate = db.candidate
-        # res = post.find_one({"_id":data[8]})
+        candidate = db.candidates
         candidate.update_one(
             {
-                "_id":ObjectId(obj[3])
+                "_id":ObjectId(obj[1])
             }, 
             {
-                "$set": {"name":obj[0], "location":obj[1], "party":obj[2]}
+                "$set": {"name":obj[0]}
             },
             upsert=False
             )
@@ -42,14 +41,12 @@ class Candidate:
     # Output:
     # returns all the candidates in an array
     def getAll(self, db):
-        candidate = db.candidate
+        candidate = db.candidates
         rec = candidate.find()
         data = []
         for each in rec:       
             tmp = []
             tmp.append(each["name"])
-            tmp.append(each["location"])
-            tmp.append(each["party"])
             tmp.append(each["_id"])
             data.append(tmp)
         return data
@@ -59,5 +56,5 @@ class Candidate:
     # Output:
     # deletes candidate at the given id
     def delete(self, db, id):
-        candidate = db.candidate
+        candidate = db.candidates
         candidate.delete_one({"_id":ObjectId(id)})
