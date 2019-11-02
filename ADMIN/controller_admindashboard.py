@@ -6,6 +6,7 @@ from models.candidate import Candidate
 from models.party import Party
 from math import ceil
 import bcrypt
+import re
 
 MAX_ENTRIES = 10 # Set the maximum entries on discussion board page to this value
 
@@ -87,7 +88,12 @@ def candidates(page):
             obj = {
                 'name':request.values.get('name'),
             }
-            candidate = Candidate().create(common, obj)
+            #client-side validation
+            regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+            if regex.search(obj.get('name')) == None:
+                candidate = Candidate().create(common, obj)
+            else:
+                flash(u'Illegal characters detected!')
             return redirect(url_for('candidates',page=str(page)))
         res = prep_data(page, "Candidates")
         total_entries = res[1]
