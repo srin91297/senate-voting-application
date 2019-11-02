@@ -87,6 +87,7 @@ def candidates(page):
             #create obj
             obj = {
                 'name':request.values.get('name'),
+                "in_party":"false"
             }
             #client-side validation
             regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
@@ -106,7 +107,7 @@ def candidates(page):
 def candidates_edit(page, candid):
     if request.method == "POST":
         #update candidate
-        data = [request.values.get('name'), candid]
+        data = [request.values.get('name'), request.values.get('in_party'), candid]
         Candidate().update(common, data)
         return redirect(url_for('candidates', page=page))
 
@@ -167,10 +168,11 @@ def parties_candidateslist(partyid, page):
                 return redirect(url_for('parties_candidateslist', partyid=partyid, page=str(1)))
         if request.method == "POST":
             #get candidate and append to candidates array of party
-            candid = Candidate().getbyid(common, request.values.get('candid'))
+            Candidate().update_in_party(common, ['true', request.values.get('candid')])
             party = Party().getbyid(common, partyid)
-            party['candidates'].append(candid[1])
-            Party().update_candidates(common, party['candidates'])
+            tmp = party[0]['candidates']
+            tmp.append(request.values.get('candid'))
+            Party().update_candidates(common, [tmp, partyid])
             return redirect(url_for('parties_candidateslist', partyid=partyid, page=str(page)))
         res = prep_data_party_candidate_list(page, partyid)
         total_entries = res[1]
@@ -180,7 +182,13 @@ def parties_candidateslist(partyid, page):
         tmp = []
         for x in party[0]['candidates']:
             tmp.append(Candidate().getbyid(common, x))
-        return render_template('partycandidatelist.html', candidates = tmp, party = party[0], data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+        #remove candidate that have already been in a party
+        Allcandidates = Candidate().getAll(common)
+        candidates_left = []
+        for x in Allcandidates:
+            if(x[1] == "false"):
+                candidates_left.append(x)
+        return render_template('partycandidatelist.html', cand_left=candidates_left, candidates = tmp, party = party[0], data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
         return render_template('login.html')
 

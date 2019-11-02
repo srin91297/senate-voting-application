@@ -21,17 +21,33 @@ class Candidate:
         return candidate.find({"_id":res})
 
     # Input: 
-    # data = [name, id]
+    # data = [in_party, id]
     # Output:
     # updates a candidate at given id with data array
-    def update(self, db, obj):
+    def update_in_party(self, db, obj):
         candidate = db.candidates
         candidate.update_one(
             {
                 "_id":ObjectId(obj[1])
             }, 
             {
-                "$set": {"name":obj[0]}
+                "$set": {"in_party":obj[0]}
+            },
+            upsert=False
+            )
+
+    # Input: 
+    # data = [name, in_party, id]
+    # Output:
+    # updates a candidate at given id with data array
+    def update(self, db, obj):
+        candidate = db.candidates
+        candidate.update_one(
+            {
+                "_id":ObjectId(obj[2])
+            }, 
+            {
+                "$set": {"name":obj[0], "in_party":obj[1]}
             },
             upsert=False
             )
@@ -47,6 +63,7 @@ class Candidate:
         for each in rec:       
             tmp = []
             tmp.append(each["name"])
+            tmp.append(each["in_party"])
             tmp.append(each["_id"])
             data.append(tmp)
         return data
