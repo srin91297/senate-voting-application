@@ -12,7 +12,6 @@ import cgi
 
 def vote():
     parties=common.db.party.find()
-    print(parties)
     candidates=common.db.candidates.find()
     if request.method == 'GET':
         return render_template('vote.html', parties=parties, candidates=candidates)
@@ -25,9 +24,9 @@ def vote():
                 x=({i['name']: request.form[i['name']]})
                 value[int(request.form[i['name']])-1] = i['name']
         
-        for j in range(0,5):
-            if (value[j] == None):
-                return render_template('voterdashboard.html')
+        #for j in range(0,5):
+            #if (value[j] == None):
+                #return render_template('voterdashboard.html')
         votes.insert({'vote': value})
         return render_template('voterdashboard.html')
 
