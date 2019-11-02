@@ -21,6 +21,11 @@ def register():
 
         existing_user = users.find_one({'name' : request.form['username']})
         
+        #check len
+        if len(transform_password) < 5:
+            flash('Password must be at least 5 characters')
+            return render_template('register.html')
+        
         #check fields entered are not empty
         if transform_password == "" or transform_username == "":
             flash('Must fill in all fields!')

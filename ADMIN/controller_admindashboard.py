@@ -1,11 +1,12 @@
 # imports
 from app import app, common, admin
-from flask import Flask, render_template, url_for, request, session, redirect
+from flask import Flask, render_template, url_for, request, session, redirect, flash
 from flask_pymongo import PyMongo
 from models.candidate import Candidate
 from models.party import Party
 from math import ceil
 import bcrypt
+import re
 
 MAX_ENTRIES = 10 # Set the maximum entries on discussion board page to this value
 
@@ -88,7 +89,14 @@ def candidates(page):
                 'name':request.values.get('name'),
                 "in_party":"false"
             }
-            candidate = Candidate().create(common, obj)
+            #client-side validation
+            regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+            if regex.search(obj.get('name')) == None:
+                #acceptable input do not flash
+                candidate = Candidate().create(common, obj)
+            else:
+                #unacceptable input flash
+                flash('Illegal Characters detected')
             return redirect(url_for('candidates',page=str(page)))
         res = prep_data(page, "Candidates")
         total_entries = res[1]
@@ -102,7 +110,14 @@ def candidates_edit(page, candid):
     if request.method == "POST":
         #update candidate
         data = [request.values.get('name'), request.values.get('in_party'), candid]
-        Candidate().update(common, data)
+        #client-side validation
+        regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+        if regex.search(data[0]) == None:
+            #acceptable input dont flash
+            Candidate().update(common, data)
+        else:
+            #unacceptable input need to flash
+            flash('Illegal Characters detected')
         return redirect(url_for('candidates', page=page))
 
 @app.route('/admindashboard/candidates/<int:page>/delete/<string:candid>', methods=["GET", "POST"])
@@ -127,7 +142,14 @@ def parties(page):
                 'name':request.values.get('name'),
                 'candidates': [],
             }
-            parties = Party().create(common, obj)
+            #client-side validation
+            regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+            if regex.search(obj.get('name')) == None:
+                #acceptable input do not flash
+                parties = Party().create(common, obj)
+            else:
+                #unacceptable input flash
+                flash('Illegal Characters detected')
             return redirect(url_for('parties',page=str(page)))
         res = prep_data(page, "Parties")
         total_entries = res[1]
@@ -141,7 +163,14 @@ def parties_edit(page, partyid):
     if request.method == "POST":
         #update party
         data = [request.values.get('name'), partyid]
-        Party().update_name(common, data)
+        #client-side validation
+        regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+        if regex.search(data[0]) == None and len(data[0]) > 1:
+            #acceptable input dont flash
+            Party().update_name(common, data)
+        else:
+            #unacceptable input need to flash
+            flash('Illegal Characters detected')
         return redirect(url_for('parties', page=page))
 
 @app.route('/admindashboard/parties/<int:page>/delete/<string:partyid>', methods=["GET", "POST"])
