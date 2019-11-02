@@ -363,10 +363,10 @@
                         <hr />
                         <table style="width:100%">
                             <tr>
-                                {% for parties in parties %}
+                                {% for candidates in candidates %}
                                 <th>
-                                    {{parties.name}}
-                                    <select name="{{parties.name}}">
+                                    {{candidates.name}}
+                                    <select name="{{candidates.name}}">
                                         <option value=""></option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -377,7 +377,6 @@
                                     </select>
                                 </th>
                                 {% endfor %}
-                                <th>Independent</th>
                             </tr>
                         </table>
                         <button type="submit" class="btn btn-secondary btn-lg btn-block">Submit Vote</button>

@@ -352,7 +352,7 @@
                                         {% for x in candidates %}
                                         <tr>
                                             <td>{{ loop.index0 }}</td>
-                                            <td>{{ x['name'] }}</td>
+                                            <td>{{ x[0]['name'] }}</td>
                                             <td>
                                                 <a href="#editPositioneModal{{ x['_id'] }}"  class="edit"
                                                     data-toggle="modal"><i class="material-icons" data-toggle="tooltip"

@@ -12,8 +12,10 @@ import cgi
 
 def vote():
     parties=common.db.party.find()
+    print(parties)
+    candidates=common.db.candidates.find()
     if request.method == 'GET':
-        return render_template('vote.html', parties=parties)
+        return render_template('vote.html', parties=parties, candidates=candidates)
     if request.method == 'POST':
         votes = common.db.votes
         count=parties.count()
