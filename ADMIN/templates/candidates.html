@@ -351,12 +351,12 @@
                                         <tr>
                                             <td>{{ x[0][0] }}</td>
                                             <td>
-                                                <a href="#editCandidateModal{{ x[0][1] }}"  class="edit"
+                                                <a href="#editCandidateModal{{ x[0][2] }}"  class="edit"
                                                     data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
                                                         title="Edit">&#xE254;</i><span>Edit</span></a>
                                             </td>
                                             <td>
-                                                <a href="#deleteCandidateModal{{ x[0][1] }}" style="color: rgb(255,0,0)" data-toggle="modal"><i
+                                                <a href="#deleteCandidateModal{{ x[0][2] }}" style="color: rgb(255,0,0)" data-toggle="modal"><i
                                                         class="icon_trash_alt"></i>
                                                     <span>Delete</span></a>
                                             </td>
@@ -408,10 +408,10 @@
                         <!-- END -->
                         {% for x in data %}
                         <!-- Edit Modal HTML -->
-                        <div id="editCandidateModal{{ x[0][1] }}" class="modal in fade">
+                        <div id="editCandidateModal{{ x[0][2] }}" class="modal in fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <form action="{{ url_for('candidates_edit', page=1, candid=x[0][1]) }}"
+                                    <form action="{{ url_for('candidates_edit', page=1, candid=x[0][2]) }}"
                                         method="POST">
                                         <div class="modal-header">
                                             <h4 class="modal-title">Edit Candidate</h4>
@@ -422,6 +422,12 @@
                                             <div class="form-group">
                                                 <label>Name</label>
                                                 <input type="text" name='name' value="{{ x[0][0] }}"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <input type="hidden" name='in_party' value="{{ x[0][1] }}"
                                                     class="form-control" required>
                                             </div>
                                         </div>
@@ -438,10 +444,10 @@
                         <!-- END -->
                         {% for x in data %}
                         <!-- Delete Modal HTML -->
-                        <div id="deleteCandidateModal{{ x[0][1] }}" class="modal fade">
+                        <div id="deleteCandidateModal{{ x[0][2] }}" class="modal fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <form action="{{ url_for('candidates_delete', page=1, candid=x[0][1]) }}"
+                                    <form action="{{ url_for('candidates_delete', page=1, candid=x[0][2]) }}"
                                     method="POST">
                                         <div class="modal-header">
                                             <h4 class="modal-title">Delete Candidate</h4>
