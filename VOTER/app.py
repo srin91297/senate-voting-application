@@ -30,4 +30,4 @@ if __name__=='__main__':
     from controller_logout import *
     from controller_vote import *
     from controller_voterdashboard import *
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
