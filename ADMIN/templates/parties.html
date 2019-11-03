@@ -398,6 +398,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <form action="" method="POST">
+										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                         <div class="modal-header">
                                             <h4 class="modal-title">Create a new Party</h4>
                                             <button type="button" class="close" data-dismiss="modal"
@@ -426,6 +427,7 @@
                                 <div class="modal-content">
                                     <form action="{{ url_for('parties_edit', page=1, partyid=x[0][2]) }}"
                                         method="POST">
+										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                         <div class="modal-header">
                                             <h4 class="modal-title">Edit Party</h4>
                                             <button type="button" class="close" data-dismiss="modal"
@@ -456,6 +458,7 @@
                                 <div class="modal-content">
                                     <form action="{{ url_for('parties_delete', page=1, partyid=x[0][2]) }}"
                                     method="POST">
+										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                         <div class="modal-header">
                                             <h4 class="modal-title">Delete Party</h4>
                                             <button type="button" class="close" data-dismiss="modal"

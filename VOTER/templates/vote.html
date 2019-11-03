@@ -341,6 +341,7 @@
                 </header>
                 <div class="panel-body">
                     <form action="http://localhost:5000/vote" method="POST">
+						<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <table style="width:100%">
                             <tr>
                                 {% for parties in parties %}
