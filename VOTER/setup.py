@@ -13,6 +13,7 @@ setup(
         'bcrypt',
         'dnspython',
         'flask_login'
-
+        'flask_wtf'
+        
     ],
 )
