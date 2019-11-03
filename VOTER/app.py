@@ -13,7 +13,7 @@ login_manager.init_app(app)
 #login_manager.login_view = 'login'
 
 mongo = PyMongo(app, uri = 'mongodb+srv://ssegroup2:MghlwoCbDqaav9Yc@ssegroup2-vksod.mongodb.net/voters?retryWrites=true&w=majority')
-common = PyMongo(app, uri = 'mongodb+srv://ssegroup2:MghlwoCbDqaav9Yc@ssegroup2-vksod.mongodb.net/common?retryWrites=true&w=majority')
+common = PyMongo(app, uri = 'mongodb+srv://ssegroup2:MghlwoCbDqaav9Yc@ssegroup2-vksod.mongodb.net/common?retryWrites=true&w=majority').db
 
 app.secret_key = 'mysecret'
 
