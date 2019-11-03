@@ -340,14 +340,14 @@
                     Voting Page
                 </header>
                 <div class="panel-body">
-                    <form action="http://localhost:5000/vote" method="POST">
+                    <form action="" method="POST">
 						<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <table style="width:100%">
                             <tr>
                                 {% for parties in parties %}
                                 <th>
-                                    {{parties.name}}
-                                    <select name="{{parties.name}}">
+                                    {{parties[0] }}
+                                    <select name="{{parties[2]}}">
                                         <option value=""></option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -358,27 +358,31 @@
                                     </select>
                                 </th>
                                 {% endfor %}
-                                <th>Independent</th>
                             </tr>
                         </table>
                         <hr />
                         <table style="width:100%">
                             <tr>
-                                {% for parties in parties %}
-                                <th>
-                                    {{parties.name}}
-                                    <select name="{{parties.name}}">
-                                        <option value=""></option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                    </select>
-                                </th>
+                                {% for partycands in candidates %}
+                                <tr>
+                                    {% for cand in partycands %}
+                                    <td>
+                                        {% if cand != '-' %}
+                                            {{cand[0]['name']}}
+                                            <select name="{{cand[0]['_id']}}">
+                                                <option value=""></option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        {% endif %}
+                                    </td>
+                                    {% endfor %}
+                                </tr>
                                 {% endfor %}
-                                <th>Independent</th>
                             </tr>
                         </table>
                         <button type="submit" class="btn btn-secondary btn-lg btn-block">Submit Vote</button>

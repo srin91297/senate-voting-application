@@ -214,18 +214,3 @@ def parties_candidateslist(partyid, page):
         return render_template('partycandidatelist.html', cand_left=candidates_left, candidates = tmp, party = party[0], data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
         return render_template('login.html')
-
-# @app.route('/admindashboard/parties/<int:page>/edit/<string:partyid>', methods=["GET", "POST"])
-# def parties_edit(page, partyid):
-#     if request.method == "POST":
-#         #update party
-#         data = [request.values.get('name'), partyid]
-#         Party().update_name(common, data)
-#         return redirect(url_for('parties', page=page))
-
-# @app.route('/admindashboard/parties/<int:page>/delete/<string:partyid>', methods=["GET", "POST"])
-# def parties_delete(page, partyid):
-#     if request.method == "POST":
-#         #Delete party
-#         Party().delete(common, partyid)
-#         return redirect(url_for('parties', page=page))
