@@ -22,17 +22,17 @@ class Party:
         return party.find({"_id":res})
 
     # Input: 
-    # data = [name, candidates[], id]
+    # data = [name, id]
     # Output:
     # updates a party at given id with data array
     def update(self, db, obj):
         party = db.party
         party.update_one(
             {
-                "_id":ObjectId(obj[2])
+                "_id":ObjectId(obj[1])
             }, 
             {
-                "$set": {"name":obj[0], "candidates":obj[1]}
+                "$set": {"name":obj[0]}
             },
             upsert=False
             )
