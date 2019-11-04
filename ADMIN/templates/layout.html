@@ -54,10 +54,6 @@
             <a href=" " class="logo">Senate <span class="lite">Voting</span></a>
             <!--logo end-->
             <div class="top-nav notification-row">
-					<a href="#stateChange" onclick="stateChange()" class="btn btn-success" data-toggle="modal">
-					<i class="material-icons">&#xE147;</i>
-					<span>Change ADMIN State</span>
-					</a>
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
                     <!-- switch strata end -->
@@ -87,10 +83,9 @@
 
                     </li>
                     <li>
-                        <a class="" href="">
+                        <a class="" href="{{ url_for('states') }}">
                             <i class="fa fa-table"></i>
-                            <span>Set Voting dates</span>
-
+                            <span>Change Voting State</span>
                         </a>
 
                     </li>

@@ -2,21 +2,44 @@ from datetime import datetime
 from bson.objectid import ObjectId
 
 class State:
-    def __init__(self):
-        state = "Set Up"
-    
-    #changes states of the ADMIN user through if-else ladder statement
-	def changeState(self):
-		if getState() == "Set Up":
+
+	# Input:
+	# id
+	# Output:
+	# returns object
+	def get(self, db):
+		s = db.state
+		rec = s.find()
+		return rec
+
+	# Input: 
+	# data = [state]
+	# Output:
+	# returns the newly created object
+	def create(self, db):
+		s = db.state
+		res =  s.insert({"state":"Set Up"})
+		return s.find({"_id":res})
+
+	# # Input: 
+	# # data = [state]
+	# # Output:
+	# # returns the newly created object
+	def update_state(self, db):
+		s = db.state
+		rec = s.find()
+		state = ""
+		if(each["state"]=="Set Up"):
 			state = "Voting"
-            print(state)
-		elif getState() == "Voting":
-			state = "View Results"
-            print(state)
-		elif getState() == "View Results":
-			state = "Voting"
-            print(state)
-			
-	#simple getter to return user state	
-	def getState(self):
-		return state
+		if(each["state"]=="Voting"):
+			state = "Results"
+		for each in rec:
+			s.update_one(
+			{
+				"_id":ObjectId(each["_id"])
+			}, 
+			{
+				"$set": {"state":state}
+			},
+			upsert=False
+			)      

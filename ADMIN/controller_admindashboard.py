@@ -4,6 +4,7 @@ from flask import Flask, render_template, url_for, request, session, redirect, f
 from flask_pymongo import PyMongo
 from models.candidate import Candidate
 from models.party import Party
+from models.state import State
 from math import ceil
 import bcrypt
 import re
@@ -217,5 +218,18 @@ def parties_candidateslist(partyid, page):
             if(x[1] == "false"):
                 candidates_left.append(x)
         return render_template('partycandidatelist.html', cand_left=candidates_left, candidates = tmp, party = party[0], data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+    else:
+        return render_template('login.html')
+
+@app.route('/admindashboard/states', methods=['GET', 'POST'])
+def states():
+    if 'username' in session:
+        if request.method == "POST":
+            #change state here
+            State().update_state(common)
+            return redirect(url_for('states'))
+        #get state
+        state = State().get(common)
+        return render_template('state.html', state = state)
     else:
         return render_template('login.html')
