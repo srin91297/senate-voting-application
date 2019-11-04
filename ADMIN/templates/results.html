@@ -336,6 +336,7 @@
                 <div class="panel-body">
                     <div class="CRUD-table">
                         <!-- START -->
+                        {% if state[0]['state'] == "Results" %}
                         <div class="container">
                             <div class="table-wrapper">
                                 <div class="table-title">
@@ -385,6 +386,7 @@
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </section>

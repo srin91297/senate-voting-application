@@ -14,8 +14,8 @@ login_manager.init_app(app)
 #login_manager.login_view = 'login'
 
 #flask wtf csrf stuff
-csrf = CSRFProtect(app)
-csrf.init_app(app)
+# csrf = CSRFProtect(app)
+# csrf.init_app(app)
 
 admin = PyMongo(app, uri = 'mongodb+srv://ssegroup2:MghlwoCbDqaav9Yc@ssegroup2-vksod.mongodb.net/admins?retryWrites=true&w=majority').db
 
