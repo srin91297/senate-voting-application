@@ -7,8 +7,8 @@ import bcrypt
 @app.route('/voterdashboard', methods=['GET'])
 def voterdashboard():
     if request.method == "GET":
-        if 'username' in session:
+        if 'username' in session and session['role'] == 'voter')::
             #return 'You are logged in as ' + session['username']
             return render_template('voterdashboard.html')
         else:
-            return render_template('login.html')
+            return redirect(url_for('logout'))

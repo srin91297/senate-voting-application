@@ -14,7 +14,7 @@ import sys
 
 @app.route('/voterdashboard/vote', methods=['POST', 'GET'])
 def vote():
-    if(session['flag'] == 'true'):
+    if(session['flag'] == 'true' and session['role'] == 'voter'):
             flash('You have already voted')
             return render_template('voterdashboard.html')
     parties = Party().getAll(common)
@@ -93,6 +93,8 @@ def vote():
             users.update_one({'name': session['username']}, {"$set": {'flag': 'true'}})
             session['flag'] = 'true'
             return render_template('voterdashboard.html')
+    else:
+        return redirect(url_for('logout'))
         
 
     return '404'
