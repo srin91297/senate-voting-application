@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\ADMIN",
+    "\\ADMIN\\templates",
+    "\\VOTER",
+    "\\VOTER\\models",
+    "\\VOTER\\static",
+    "\\VOTER\\templates"
+  ],
+  "SelectedNode": "\\VOTER\\app.py",
+  "PreviewInSolutionExplorer": false
+}

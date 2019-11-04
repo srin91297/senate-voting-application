@@ -18,3 +18,4 @@ This is a major assessment component that expects students to join a team and ca
       * Run "pip3 install ." into a termainal in the VOTER folder
       * Run "python3 app.py"
       * Access it through localhost:5001
+
