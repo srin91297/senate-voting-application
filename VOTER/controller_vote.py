@@ -1,20 +1,25 @@
 # imports
 from app import app, mongo, common
-from flask import Flask, render_template, url_for, request, session, redirect
+from flask import Flask, render_template, url_for, request, session, redirect, flash
 from flask_pymongo import PyMongo
 from models.candidate import Candidate
 from models.party import Party
 from models.vote import Vote
 from math import ceil
 import bcrypt
+import sys
 
 #def sorter(e):
     #return e['name']
 
 @app.route('/voterdashboard/vote', methods=['POST', 'GET'])
 def vote():
+    if(session['flag'] == 'true' and session['role'] == 'voter'):
+            flash('You have already voted')
+            return render_template('voterdashboard.html')
     parties = Party().getAll(common)
     candidates = Candidate().getAll(common)
+    users=mongo.db.users
     #form structure
     tmp = []
     below_line = []
@@ -83,6 +88,13 @@ def vote():
             'candid':candvoted
         }
         vote = Vote().create(common, obj)
-        return render_template('voterdashboard.html')
+        if(session['flag'] == 'false'):
+            login_user = users.find_one({'name' : session['username']})
+            users.update_one({'name': session['username']}, {"$set": {'flag': 'true'}})
+            session['flag'] = 'true'
+            return render_template('voterdashboard.html')
+    else:
+        return redirect(url_for('logout'))
+        
 
     return '404'

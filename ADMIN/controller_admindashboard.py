@@ -3,9 +3,12 @@ from app import app, common, admin
 from flask import Flask, render_template, url_for, request, session, redirect, flash
 from flask_pymongo import PyMongo
 from models.candidate import Candidate
+from bson.objectid import ObjectId
 from models.party import Party
 from models.state import State
+from models.vote import Vote
 from math import ceil
+import operator
 import bcrypt
 import re
 
@@ -21,6 +24,8 @@ def get_max_page(type):
         total = len(Candidate().getAll(common))
     elif type == "Parties":
         total = len(Party().getAll(common))
+    elif type == "Results":
+        total = len(Vote().getAll(common))
     if total == 0:
         total = 1
     return ceil(total/MAX_ENTRIES)
@@ -30,6 +35,8 @@ def prep_data(page_num, type):
         data = Candidate().getAll(common)
     elif type == "Parties":
         data = Party().getAll(common)
+    elif type == "Results":
+        data = Vote().getAll(common)
     total = len(data)
     res = []
     i = 0
@@ -74,15 +81,16 @@ def prep_data_party_candidate_list(page_num, partyid):
 @app.route('/admindashboard', methods=['GET'])
 def admindashboard():
     if request.method == "GET":
-        if 'username' in session:
+        if 'username' in session and session['role'] == 'admin':
             #return 'You are logged in as ' + session['username']
             return render_template('admindashboard.html')
         else:
-            return render_template('login.html')
+            return redirect(url_for('logout'))
 
 @app.route('/admindashboard/candidates/<int:page>', methods=['GET', 'POST'])
 def candidates(page):
-    if 'username' in session:
+    print(session)
+    if 'username' in session and session['role'] == 'admin':
         if request.method == "GET":
             max_pages = get_max_page("Candidates")
             if page > max_pages:
@@ -110,7 +118,7 @@ def candidates(page):
         state = State().get(common)
         return render_template('candidates.html', state=state, data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
-        return render_template('login.html')
+        return redirect(url_for('logout'))
 
 @app.route('/admindashboard/candidates/<int:page>/edit/<string:candid>', methods=["GET", "POST"])
 def candidates_edit(page, candid):
@@ -130,13 +138,36 @@ def candidates_edit(page, candid):
 @app.route('/admindashboard/candidates/<int:page>/delete/<string:candid>', methods=["GET", "POST"])
 def candidates_delete(page, candid):
     if request.method == "POST":
+        #get candidate by id
+        cand = Candidate().getbyid(common, candid)
+        #Remove candidate from party if true
+        if(cand[0]['in_party']=='true'):
+            #search
+            parties = Party().getAll(common)
+            #form structure
+            i = 0
+            flag = False
+            #get candidates from parties
+            for party in parties:
+                i = 0
+                for cands in party[1]:
+                    #check if cand is in party
+                    if(str(cand[0]['_id']) == str(cands)):
+                        currparty = party[1]
+                        del currparty[i]
+                        flag = True
+                        #update party
+                        Party().update_candidates(common, [currparty, party[2]])
+                        break
+                    i = i + 1
+                flag = True
         #Delete candidate
         Candidate().delete(common, candid)
         return redirect(url_for('candidates', page=page))
 
 @app.route('/admindashboard/parties/<int:page>', methods=['GET', 'POST'])
 def parties(page):
-    if 'username' in session:
+    if 'username' in session and session['role'] == 'admin':
         if request.method == "GET":
             max_pages = get_max_page("Parties")
             if page > max_pages:
@@ -164,7 +195,7 @@ def parties(page):
         state = State().get(common)
         return render_template('parties.html', state=state, data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
-        return render_template('login.html')
+        return redirect(url_for('logout'))
 
 @app.route('/admindashboard/parties/<int:page>/edit/<string:partyid>', methods=["GET", "POST"])
 def parties_edit(page, partyid):
@@ -190,7 +221,7 @@ def parties_delete(page, partyid):
 
 @app.route('/admindashboard/parties/<string:partyid>/candidates/<int:page>', methods=['GET', 'POST'])
 def parties_candidateslist(partyid, page):
-    if 'username' in session:
+    if 'username' in session and session['role'] == 'admin':
         if request.method == "GET":
             max_pages = get_max_page_party_candidate_list(partyid)
             if page > max_pages:
@@ -235,4 +266,76 @@ def states():
         state = State().get(common)
         return render_template('state.html', state = state)
     else:
-        return render_template('login.html')
+        return redirect(url_for('logout'))
+
+@app.route('/admindashboard/parties/<string:partyid>/candidates/<int:page>/delete/<string:candid>', methods=["GET", "POST"])
+def parties_candidateslist_delete(partyid, page, candid):
+    if request.method == "POST":
+        #get candidate by id
+        cand = Candidate().getbyid(common, candid)
+        #Remove candidate from party if true
+        if(cand[0]['in_party']=='true'):
+            #search
+            parties = Party().getAll(common)
+            #form structure
+            i = 0
+            flag = False
+            #get candidates from parties
+            for party in parties:
+                i = 0
+                for cands in party[1]:
+                    #check if cand is in party
+                    if(str(cand[0]['_id']) == str(cands)):
+                        currparty = party[1]
+                        del currparty[i]
+                        flag = True
+                        #update party
+                        Party().update_candidates(common, [currparty, party[2]])
+                        break
+                    i = i + 1
+                flag = True
+            #update candidates party status
+            Candidate().update_in_party(common, ['false', candid]) 
+        return redirect(url_for('parties_candidateslist', partyid=partyid, page=page))
+
+@app.route('/admindashboard/results/<int:page>', methods=['GET', 'POST'])
+def results(page):
+    if 'username' in session and session['role'] == 'admin':
+        if request.method == "GET":
+            max_pages = get_max_page("Results")
+            if page > max_pages:
+                return redirect(url_for('results',page=str(max_pages)))
+            if page < 1:
+                return redirect(url_for('results',page=str(1)))
+        res = prep_data(page, "Results")
+        total_entries = res[1]
+        current_entries = res[2]
+        #calculate here
+        #get all the votes
+        votes = Vote().getAll(common)
+        #flatten list
+        votestest = []
+        i = 0
+        for v in votes:
+            for item in v:
+                if i % 2 == 0:
+                    votestest.append(str(item))
+                i = i + 1
+        totalv = 0
+        tmp = 0
+        results = []
+        print(votestest)
+        votestestunique = [] 
+        for num in votestest: 
+            if num not in votestestunique: 
+                votestestunique.append(num) 
+        for vote in votestestunique:
+            tmp = votestest.count(vote)
+            totalv = totalv + tmp
+            results.append([tmp, Candidate().getbyid(common, vote)])
+        sort = sorted(results, key = operator.itemgetter(0), reverse=True)
+        return render_template('results.html', results=sort, totalvotes=totalv, data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+    else:
+        return redirect(url_for('logout'))
+
+    

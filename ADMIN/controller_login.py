@@ -30,8 +30,9 @@ def login():
         if login_user:
             if (request.form['pass'], login_user['password'] == login_user['password']):
                 session['username'] = request.form['username']
+                session['role'] = login_user['role']
                 if(login_user['role'] == "admin"):
-                    return redirect(url_for('admindashboard'))
+                    return redirect(url_for('candidates', page=1))
             else:
                 #show message of incorrect details
                 return render_template('login.html', mess='Incorrect login details entered')
