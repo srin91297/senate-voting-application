@@ -35,7 +35,7 @@ def register():
         if existing_user is None:
             #add user
             hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
-            users.insert({'name' : request.form['username'], 'password' : hashpass, 'role': 'voter'})
+            users.insert({'name' : request.form['username'], 'password' : hashpass, 'role': 'voter', 'flag': 'false'})
             # session['username'] = request.form['username']
             # flash('user successfully created')
             return render_template('login.html', mess='user successfully created')
