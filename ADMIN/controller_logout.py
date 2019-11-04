@@ -10,5 +10,6 @@ import cgi
 
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
+    session.pop('username', None)
     logout_user()
     return redirect(url_for('login'))
