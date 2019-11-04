@@ -424,7 +424,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <form action="{{ url_for('candidates_edit', page=1, candid=x[0][2]) }}"
-                                        method="POST">
+									method="POST">
 										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                         <div class="modal-header">
                                             <h4 class="modal-title">Edit Candidate</h4>
