@@ -30,6 +30,7 @@ def login():
         if login_user:
             if (request.form['pass'], login_user['password'] == login_user['password']):
                 session['username'] = request.form['username']
+                session['flag'] = login_user['flag']
                 if(login_user['role'] == "voter"):
                     return redirect(url_for('voterdashboard'))
             else:
