@@ -253,11 +253,11 @@ def parties_candidateslist(partyid, page):
         state = State().get(common)
         return render_template('partycandidatelist.html', state=state, cand_left=candidates_left, candidates = tmp, party = party[0], data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
-        return render_template('login.html')
+        return redirect(url_for('logout'))
 
 @app.route('/admindashboard/states', methods=['GET', 'POST'])
 def states():
-    if 'username' in session:
+    if 'username' in session and session['role'] == 'admin':
         if request.method == "POST":
             #change state here
             State().update_state(common)
@@ -334,7 +334,8 @@ def results(page):
             totalv = totalv + tmp
             results.append([tmp, Candidate().getbyid(common, vote)])
         sort = sorted(results, key = operator.itemgetter(0), reverse=True)
-        return render_template('results.html', results=sort, totalvotes=totalv, data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+        state = State().get(common)
+        return render_template('results.html', state=state, results=sort, totalvotes=totalv, data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
         return redirect(url_for('logout'))
 

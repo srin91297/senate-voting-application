@@ -340,8 +340,8 @@
                     Voting Page
                 </header>
                 <div class="panel-body">
+                    {% if state[0]['state'] == "Voting" %}
                     <form action="" method="POST">
-					<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <table style="width:100%">
                             <tr>
                                 {% for parties in parties %}
@@ -394,7 +394,7 @@
                         </table>
                         <button type="submit" class="btn btn-secondary btn-lg btn-block">Submit Vote</button>
                     </form>
-                        
+                     {% endif %}   
 </div>
             </section>
         </div>

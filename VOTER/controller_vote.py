@@ -5,6 +5,7 @@ from flask_pymongo import PyMongo
 from models.candidate import Candidate
 from models.party import Party
 from models.vote import Vote
+from models.state import State
 from math import ceil
 import bcrypt
 import sys
@@ -51,7 +52,8 @@ def vote():
         array.append(tmp)
         k = k + 1
     if request.method == 'GET':
-        return render_template('vote.html', parties=parties, candidates=array)
+        state = State().get(common)
+        return render_template('vote.html', state=state, parties=parties, candidates=array)
     if request.method == 'POST':
         #find who got voted 1st     
         #check below the line first
