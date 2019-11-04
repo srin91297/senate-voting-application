@@ -344,10 +344,12 @@
                                             <h2 style="color:rgb(255, 255, 255);"><b>Candidates</b></h2>
                                         </div>
                                         <div class="col-sm-6">
+											{% if state == "Set Up" %}
                                             <a href="#addCandidate" class="btn btn-success" data-toggle="modal">
                                                 <i class="material-icons">&#xE147;</i>
                                                 <span>Create a New Candidate</span>
                                             </a>
+											{% endif %}
                                         </div>
                                     </div>
                                 </div>

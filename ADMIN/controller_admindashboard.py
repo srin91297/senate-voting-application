@@ -10,6 +10,11 @@ import re
 
 MAX_ENTRIES = 10 # Set the maximum entries on discussion board page to this value
 
+def stateChange():
+    if 'username' in session:
+        State().changeState
+    return render_template('candidate.html', state = State().getState())
+
 def get_max_page(type):
     if type == "Candidates":
         total = len(Candidate().getAll(common))
