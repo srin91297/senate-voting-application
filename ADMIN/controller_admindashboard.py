@@ -5,6 +5,7 @@ from flask_pymongo import PyMongo
 from models.candidate import Candidate
 from bson.objectid import ObjectId
 from models.party import Party
+from models.state import State
 from models.vote import Vote
 from math import ceil
 import operator
@@ -12,6 +13,11 @@ import bcrypt
 import re
 
 MAX_ENTRIES = 10 # Set the maximum entries on discussion board page to this value
+
+def stateChange():
+    if 'username' in session:
+        State().changeState
+    return render_template('candidate.html', state = State().getState())
 
 def get_max_page(type):
     if type == "Candidates":
@@ -109,7 +115,8 @@ def candidates(page):
         res = prep_data(page, "Candidates")
         total_entries = res[1]
         current_entries = res[2]
-        return render_template('candidates.html', data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+        state = State().get(common)
+        return render_template('candidates.html', state=state, data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
         return redirect(url_for('logout'))
 
@@ -185,7 +192,8 @@ def parties(page):
         res = prep_data(page, "Parties")
         total_entries = res[1]
         current_entries = res[2]
-        return render_template('parties.html', data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+        state = State().get(common)
+        return render_template('parties.html', state=state, data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
         return redirect(url_for('logout'))
 
@@ -242,7 +250,21 @@ def parties_candidateslist(partyid, page):
         for x in Allcandidates:
             if(x[1] == "false"):
                 candidates_left.append(x)
-        return render_template('partycandidatelist.html', cand_left=candidates_left, candidates = tmp, party = party[0], data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+        state = State().get(common)
+        return render_template('partycandidatelist.html', state=state, cand_left=candidates_left, candidates = tmp, party = party[0], data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+    else:
+        return render_template('login.html')
+
+@app.route('/admindashboard/states', methods=['GET', 'POST'])
+def states():
+    if 'username' in session:
+        if request.method == "POST":
+            #change state here
+            State().update_state(common)
+            return redirect(url_for('states'))
+        #get state
+        state = State().get(common)
+        return render_template('state.html', state = state)
     else:
         return redirect(url_for('logout'))
 

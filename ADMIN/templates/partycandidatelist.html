@@ -334,10 +334,12 @@
                                             <h2 style="color:rgb(255, 255, 255);"><b>Candidates</b></h2>
                                         </div>
                                         <div class="col-sm-6">
+											{% if state[0]['state'] == "Set Up" %}
                                             <a href="#addCandidate" class="btn btn-success" data-toggle="modal">
                                                 <i class="material-icons">&#xE147;</i>
                                                 <span>Add Candidate</span>
                                             </a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -353,6 +355,7 @@
                                             <tr>
                                                 <td>{{ loop.index0 }}</td>
                                                 <td>{{ x[0]['name'] }}</td>
+											    {% if state[0]['state'] == "Set Up" %}
                                                 <td>
                                                     <a href="#editPositioneModal{{ x[0]['_id'] }}"  class="edit"
                                                         data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
@@ -363,6 +366,7 @@
                                                             class="icon_trash_alt"></i>
                                                         <span>Remove Candidate</span></a>
                                                 </td>
+                                                {% endif %}
                                             </tr>
                                         {% endfor %}
                                     </tbody>
