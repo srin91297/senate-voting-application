@@ -3,8 +3,11 @@ from app import app, common, admin
 from flask import Flask, render_template, url_for, request, session, redirect, flash
 from flask_pymongo import PyMongo
 from models.candidate import Candidate
+from bson.objectid import ObjectId
 from models.party import Party
+from models.vote import Vote
 from math import ceil
+import operator
 import bcrypt
 import re
 
@@ -285,8 +288,30 @@ def results(page):
         total_entries = res[1]
         current_entries = res[2]
         #calculate here
-    
-        return render_template('results.html', data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+        #get all the votes
+        votes = Vote().getAll(common)
+        #flatten list
+        votestest = []
+        i = 0
+        for v in votes:
+            for item in v:
+                if i % 2 == 0:
+                    votestest.append(str(item))
+                i = i + 1
+        totalv = 0
+        tmp = 0
+        results = []
+        print(votestest)
+        votestestunique = [] 
+        for num in votestest: 
+            if num not in votestestunique: 
+                votestestunique.append(num) 
+        for vote in votestestunique:
+            tmp = votestest.count(vote)
+            totalv = totalv + tmp
+            results.append([tmp, Candidate().getbyid(common, vote)])
+        sort = sorted(results, key = operator.itemgetter(0), reverse=True)
+        return render_template('results.html', results=sort, totalvotes=totalv, data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
         return render_template('login.html')
 
