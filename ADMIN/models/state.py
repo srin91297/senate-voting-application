@@ -29,11 +29,11 @@ class State:
 		s = db.state
 		rec = s.find()
 		state = ""
-		if(each["state"]=="Set Up"):
-			state = "Voting"
-		if(each["state"]=="Voting"):
-			state = "Results"
 		for each in rec:
+			if(each["state"]=="Set Up"):
+				state = "Voting"
+			if(each["state"]=="Voting"):
+				state = "Results"
 			s.update_one(
 			{
 				"_id":ObjectId(each["_id"])

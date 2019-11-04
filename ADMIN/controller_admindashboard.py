@@ -107,7 +107,8 @@ def candidates(page):
         res = prep_data(page, "Candidates")
         total_entries = res[1]
         current_entries = res[2]
-        return render_template('candidates.html', data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+        state = State().get(common)
+        return render_template('candidates.html', state=state, data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
         return render_template('login.html')
 
@@ -160,7 +161,8 @@ def parties(page):
         res = prep_data(page, "Parties")
         total_entries = res[1]
         current_entries = res[2]
-        return render_template('parties.html', data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+        state = State().get(common)
+        return render_template('parties.html', state=state, data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
         return render_template('login.html')
 
@@ -217,7 +219,8 @@ def parties_candidateslist(partyid, page):
         for x in Allcandidates:
             if(x[1] == "false"):
                 candidates_left.append(x)
-        return render_template('partycandidatelist.html', cand_left=candidates_left, candidates = tmp, party = party[0], data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
+        state = State().get(common)
+        return render_template('partycandidatelist.html', state=state, cand_left=candidates_left, candidates = tmp, party = party[0], data = res[0], total = total_entries, current = current_entries, page_max = max_pages, current_page = page)
     else:
         return render_template('login.html')
 

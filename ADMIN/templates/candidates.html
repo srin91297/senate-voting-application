@@ -344,7 +344,7 @@
                                             <h2 style="color:rgb(255, 255, 255);"><b>Candidates</b></h2>
                                         </div>
                                         <div class="col-sm-6">
-											{% if state == "Set Up" %}
+											{% if state[0]['state'] == "Set Up" %}
                                             <a href="#addCandidate" class="btn btn-success" data-toggle="modal">
                                                 <i class="material-icons">&#xE147;</i>
                                                 <span>Create a New Candidate</span>
@@ -363,6 +363,7 @@
                                         {% for x in data %}
                                         <tr>
                                             <td>{{ x[0][0] }}</td>
+											{% if state[0]['state'] == "Set Up" %}
                                             <td>
                                                 <a href="#editCandidateModal{{ x[0][2] }}"  class="edit"
                                                     data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
@@ -373,6 +374,7 @@
                                                         class="icon_trash_alt"></i>
                                                     <span>Delete</span></a>
                                             </td>
+                                            {% endif %}
                                         </tr>
                                         {% endfor %}
                                     </tbody>
