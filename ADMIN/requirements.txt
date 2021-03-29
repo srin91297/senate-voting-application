@@ -64,7 +64,7 @@ ptyprocess==0.6.0
 pycairo==1.16.2
 pycparser==2.19
 pycrypto==2.6.1
-Pygments==2.4.2
+Pygments==2.7.4
 pygobject==3.26.1
 pymongo==3.8.0
 pyparsing==2.4.2
